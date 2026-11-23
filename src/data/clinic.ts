@@ -2,6 +2,9 @@ import type { ClinicConfig } from "../types/clinic";
 
 import { buildWhatsAppUrl } from "../lib/whatsapp";
 
+const imageAsset = (filename: string): string =>
+  `${import.meta.env.BASE_URL}images/${filename}`;
+
 const whatsappNumber = "923261819693";
 
 export const clinic: ClinicConfig = {
@@ -746,7 +749,7 @@ export const clinic: ClinicConfig = {
 
   images: {
     heroMain: {
-      src: "/images/hero-main.jpg",
+      src: imageAsset("hero-main.jpg"),
       alt: "Illustrative stock photograph of a dentist speaking with a patient during an appointment",
       searchHint:
         "Pexels 5355890 dentist patient appointment",
@@ -755,7 +758,7 @@ export const clinic: ClinicConfig = {
     },
 
     heroSecondary: {
-      src: "/images/hero-secondary.jpg",
+      src: imageAsset("hero-secondary.jpg"),
       alt: "Illustrative stock photograph of a bright modern dentist office and treatment chair",
       searchHint:
         "Pexels 7422520 modern dentist office interior",
@@ -764,7 +767,7 @@ export const clinic: ClinicConfig = {
     },
 
     about: {
-      src: "/images/about.jpg",
+      src: imageAsset("about.jpg"),
       alt: "Illustrative stock photograph of a clean dental clinic reception desk",
       searchHint:
         "Pexels 6809645 dental clinic reception desk",
@@ -773,7 +776,7 @@ export const clinic: ClinicConfig = {
     },
 
     team1: {
-      src: "/images/team-1.jpg",
+      src: imageAsset("team-1.jpg"),
       alt: "Illustrative stock portrait of a male dentist in a modern clinic; not an actual Sagewood team member",
       searchHint:
         "Pexels 37458047 male dentist portrait",
@@ -782,7 +785,7 @@ export const clinic: ClinicConfig = {
     },
 
     team2: {
-      src: "/images/team-2.jpg",
+      src:  imageAsset("team-2.jpg"),
       alt: "Illustrative stock portrait of a female dentist in a modern clinic; not an actual Sagewood team member",
       searchHint:
         "Pexels 37458354 female dentist portrait",
@@ -791,7 +794,7 @@ export const clinic: ClinicConfig = {
     },
 
     team3: {
-      src: "/images/team-3.jpg",
+      src: imageAsset("team-3.jpg"),
       alt: "Illustrative stock portrait of a female dental professional; not an actual Sagewood team member",
       searchHint:
         "Pexels 31043310 female dentist portrait",
@@ -800,7 +803,7 @@ export const clinic: ClinicConfig = {
     },
 
     tourReception: {
-      src: "/images/tour-reception.jpg",
+      src: imageAsset("tour-reception.jpg"),
       alt: "Illustrative stock photograph of a patient speaking with a receptionist at a dental clinic",
       searchHint:
         "Pexels 6809664 patient dental clinic receptionist",
@@ -809,7 +812,7 @@ export const clinic: ClinicConfig = {
     },
 
     tourConsultation: {
-      src: "/images/tour-consultation.jpg",
+      src: imageAsset("tour-consultation.jpg"),
       alt: "Illustrative stock photograph of a dentist examining a patient in a clinic",
       searchHint:
         "Pexels 5622234 dentist patient examination",
@@ -818,7 +821,7 @@ export const clinic: ClinicConfig = {
     },
 
     tourTreatment: {
-      src: "/images/tour-treatment.jpg",
+      src: imageAsset("tour-treatment.jpg"),
       alt: "Illustrative stock photograph of a modern dental chair and treatment equipment",
       searchHint:
         "Pexels 6812480 dental chair equipment",
@@ -827,7 +830,7 @@ export const clinic: ClinicConfig = {
     },
 
     tourSterilisation: {
-      src: "/images/tour-sterilisation.jpg",
+      src: imageAsset("tour-sterilisation.jpg"),
       alt: "Illustrative stock photograph of sterilisation storage for dental instruments",
       searchHint:
         "Pexels 6812550 sterile dental instruments individually wrapped",
