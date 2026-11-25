@@ -10,6 +10,7 @@ import {
   Phone,
   X,
 } from "lucide-react";
+import { createPortal } from "react-dom";
 
 import { clinic } from "../../data/clinic";
 
@@ -35,6 +36,7 @@ const SECTION_IDS = [
 
 export function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
+  const [menuTop, setMenuTop] = useState(0);
 
   const toggleRef = useRef<HTMLButtonElement | null>(null);
 
@@ -57,6 +59,19 @@ export function MobileMenu() {
     restoreFocusRef.current = true;
     setIsOpen(false);
   }, []);
+
+  function toggleMenu(): void {
+    if (!isOpen) {
+      const navbarBottom =
+        toggleRef.current
+          ?.closest(".glass-nav")
+          ?.getBoundingClientRect().bottom ?? 0;
+
+      setMenuTop(Math.ceil(navbarBottom + 16));
+    }
+
+    setIsOpen((current) => !current);
+  }
 
   useBodyScrollLock(isOpen);
 
@@ -81,7 +96,7 @@ export function MobileMenu() {
         aria-label={isOpen ? "Close menu" : "Open menu"}
         aria-expanded={isOpen}
         aria-controls="clinic-mobile-menu"
-        onClick={() => setIsOpen((current) => !current)}
+        onClick={toggleMenu}
         className="relative z-[70] inline-flex h-11 w-11 items-center justify-center rounded-full border border-warmwhite/30 text-warmwhite transition-colors hover:bg-sage/30 focus-visible:outline-warmwhite"
       >
         {isOpen ? (
@@ -97,117 +112,122 @@ export function MobileMenu() {
         )}
       </button>
 
-      <div
-        hidden={!isOpen}
-        className="fixed inset-0 z-[60] bg-forest/35 px-3 pb-4 pt-20 sm:px-5"
-        onClick={(event) => {
-          if (event.target === event.currentTarget) {
-            closeMenu();
-          }
-        }}
-      >
-        <div
-          id="clinic-mobile-menu"
-          ref={panelRef}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Mobile navigation"
-          tabIndex={-1}
-          className="glass-panel mobile-menu-panel focus-on-dark mx-auto max-h-[calc(100dvh-6rem)] w-full max-w-lg overflow-y-auto rounded-3xl p-5 sm:p-7"
-        >
-          <nav aria-label="Mobile main navigation">
-            <ul className="space-y-1">
-              {clinic.nav.map((item) => {
-                if ("children" in item) {
-                  return (
-                    <li key={item.label} className="pt-4">
-                      <p className="mb-2 px-4 text-xs font-bold uppercase tracking-[0.2em] text-lightsage">
-                        {item.label}
-                      </p>
-
-                      <ul className="space-y-1">
-                        {item.children.map((child) => {
-                          const isActive =
-                            child.href.slice(1) === activeSection;
-
-                          return (
-                            <li key={child.href}>
-                              <a
-                                href={child.href}
-                                aria-current={
-                                  isActive ? "location" : undefined
-                                }
-                                onClick={closeMenu}
-                                className={[
-                                  "flex min-h-12 items-center rounded-xl px-4 py-3 text-lg font-medium text-warmwhite transition-colors hover:bg-sage/30",
-                                  isActive ? "bg-sage/30" : "",
-                                ]
-                                  .filter(Boolean)
-                                  .join(" ")}
-                              >
-                                {child.label}
-                              </a>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </li>
-                  );
-                }
-
-                const isActive =
-                  item.href.slice(1) === activeSection;
-
-                return (
-                  <li key={item.href}>
-                    <a
-                      href={item.href}
-                      aria-current={
-                        isActive ? "location" : undefined
-                      }
-                      onClick={closeMenu}
-                      className={[
-                        "flex min-h-12 items-center rounded-xl px-4 py-3 text-lg font-medium text-warmwhite transition-colors hover:bg-sage/30",
-                        isActive ? "bg-sage/30" : "",
-                      ]
-                        .filter(Boolean)
-                        .join(" ")}
-                    >
-                      {item.label}
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-          </nav>
-
-          <div className="my-6 h-px bg-warmwhite/20" />
-
-          <div className="flex flex-col gap-3">
-            <Button
-              href={callHref}
-              variant="inverse-outline"
-              className="w-full"
-              ariaLabel={callLabel}
+      {isOpen &&
+        createPortal(
+          <div
+            className="fixed inset-x-0 bottom-0 z-[70] overflow-hidden bg-transparent px-3 pb-4 sm:px-5"
+            style={{ top: menuTop }}
+            onClick={(event) => {
+              if (event.target === event.currentTarget) {
+                closeMenu();
+              }
+            }}
+          >
+            <div
+              id="clinic-mobile-menu"
+              ref={panelRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Mobile navigation"
+              tabIndex={-1}
+              className="glass-panel mobile-menu-panel focus-on-dark mx-auto w-full max-w-lg overflow-y-auto rounded-3xl p-5 sm:p-7"
+              style={{ maxHeight: `calc(100dvh - ${menuTop}px - 0.5rem)` }}
             >
-              <Phone
-                size={17}
-                aria-hidden="true"
-              />
+              <nav aria-label="Mobile main navigation">
+                <ul className="space-y-1">
+                  {clinic.nav.map((item) => {
+                    if ("children" in item) {
+                      return (
+                        <li key={item.label} className="pt-4">
+                          <p className="mb-2 px-4 text-xs font-bold uppercase tracking-[0.2em] text-lightsage">
+                            {item.label}
+                          </p>
 
-              <span>Call now</span>
-            </Button>
+                          <ul className="space-y-1">
+                            {item.children.map((child) => {
+                              const isActive =
+                                child.href.slice(1) === activeSection;
 
-            <Button
-              href="#contact"
-              variant="inverse"
-              className="w-full"
-            >
-              Book appointment
-            </Button>
-          </div>
-        </div>
-      </div>
+                              return (
+                                <li key={child.href}>
+                                  <a
+                                    href={child.href}
+                                    aria-current={
+                                      isActive ? "location" : undefined
+                                    }
+                                    onClick={closeMenu}
+                                    className={[
+                                      "flex min-h-12 items-center rounded-xl px-4 py-3 text-lg font-medium text-warmwhite transition-colors hover:bg-sage/30",
+                                      isActive ? "bg-sage/30" : "",
+                                    ]
+                                      .filter(Boolean)
+                                      .join(" ")}
+                                  >
+                                    {child.label}
+                                  </a>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </li>
+                      );
+                    }
+
+                    const isActive =
+                      item.href.slice(1) === activeSection;
+
+                    return (
+                      <li key={item.href}>
+                        <a
+                          href={item.href}
+                          aria-current={
+                            isActive ? "location" : undefined
+                          }
+                          onClick={closeMenu}
+                          className={[
+                            "flex min-h-12 items-center rounded-xl px-4 py-3 text-lg font-medium text-warmwhite transition-colors hover:bg-sage/30",
+                            isActive ? "bg-sage/30" : "",
+                          ]
+                            .filter(Boolean)
+                            .join(" ")}
+                        >
+                          {item.label}
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </nav>
+
+              <div className="my-6 h-px bg-warmwhite/20" />
+
+              <div className="flex flex-col gap-3">
+                <Button
+                  href={callHref}
+                  variant="inverse-outline"
+                  className="w-full"
+                  ariaLabel={callLabel}
+                >
+                  <Phone
+                    size={17}
+                    aria-hidden="true"
+                  />
+
+                  <span>Call now</span>
+                </Button>
+
+                <Button
+                  href="#contact"
+                  variant="inverse"
+                  className="w-full"
+                >
+                  Book appointment
+                </Button>
+              </div>
+            </div>
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }
