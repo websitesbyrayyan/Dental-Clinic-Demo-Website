@@ -82,7 +82,7 @@ export function MobileMenu() {
         aria-expanded={isOpen}
         aria-controls="clinic-mobile-menu"
         onClick={() => setIsOpen((current) => !current)}
-        className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-warmwhite/30 text-warmwhite transition-colors hover:bg-sage/30 focus-visible:outline-warmwhite"
+        className="relative z-[70] inline-flex h-11 w-11 items-center justify-center rounded-full border border-warmwhite/30 text-warmwhite transition-colors hover:bg-sage/30 focus-visible:outline-warmwhite"
       >
         {isOpen ? (
           <X
@@ -113,7 +113,7 @@ export function MobileMenu() {
           aria-modal="true"
           aria-label="Mobile navigation"
           tabIndex={-1}
-          className="glass-panel focus-on-dark mx-auto max-h-[calc(100dvh-6rem)] w-full max-w-lg overflow-y-auto rounded-3xl p-5 sm:p-7"
+          className="glass-panel mobile-menu-panel focus-on-dark mx-auto max-h-[calc(100dvh-6rem)] w-full max-w-lg overflow-y-auto rounded-3xl p-5 sm:p-7"
         >
           <nav aria-label="Mobile main navigation">
             <ul className="space-y-1">

@@ -194,6 +194,16 @@ h6 {
   box-shadow: 0 16px 45px rgba(24, 61, 53, 0.22);
 }
 
+@media (max-width: 1023px) {
+  .glass-nav {
+    background: rgba(24, 61, 53, 0.96);
+  }
+
+  .glass-panel.mobile-menu-panel {
+    background: var(--color-forest);
+  }
+}
+
 /*
   Fallback for browsers without backdrop-filter support.
   These fallbacks retain the Forest Green identity.
